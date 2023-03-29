@@ -117,3 +117,125 @@ JOIN Sanpham ON Nhap.masp = Sanpham.masp
 JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
 JOIN Nhanvien ON Nhap.manv = Nhanvien.manv
 ORDER BY Nhap.sohdn ASC;
+--6
+SELECT sohdn, Sanpham.masp, tensp, soluongN, dongiaN, ngaynhap, tennv, phong
+FROM Nhap 
+JOIN Sanpham ON Nhap.masp = Sanpham.masp 
+JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
+JOIN Nhanvien ON Nhap.manv = Nhanvien.manv
+WHERE Hangsx.tenhang = 'Samsung' AND YEAR(ngaynhap) = 2017;
+SELECT TOP 10 Xuat.sohdx, Sanpham.tensp, Xuat.soluongX
+FROM Xuat 
+INNER JOIN Sanpham ON Xuat.masp = Sanpham.masp
+WHERE YEAR(Xuat.ngayxuat) = '2023' 
+ORDER BY Xuat.soluongX DESC;
+-- 9.Đưa ra thông tin 10 sản phẩm có giả bản cao nhất trong cửa hàng, theo chiều giảm dần giá bán.
+SELECT TOP 10 tenSP, giaBan
+FROM SanPham
+ORDER BY giaBan DESC;
+-- 10.Đưa ra các thông tin sản phẩm có gia bản từ 100.000 đến 500.000 của hãng Samsung.
+SELECT *
+FROM Sanpham
+JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
+WHERE Hangsx.tenhang = 'Samsung' AND Sanpham.giaban >= 100000 AND Sanpham.giaban <= 500000
+-- 11.Tính tổng tiền đã nhập trong năm 2018 của hãng samsung. 
+SELECT SUM(soluongN * dongiaN) AS tongtien
+FROM Nhap
+JOIN Sanpham ON Nhap.masp = Sanpham.masp
+JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
+WHERE Hangsx.tenhang = 'Samsung' AND YEAR(ngaynhap) = 2018
+-- 12.Thống kê tổng tiền đã xuất trong ngày 2/9/2018.
+	SELECT SUM(Xuat.soluongX * Sanpham.giaban) AS Tongtien
+FROM Xuat
+INNER JOIN Sanpham ON Xuat.masp = Sanpham.masp
+WHERE Xuat.ngayxuat = '2018-09-02'
+-- 13.Đưa ra sohdn, ngaynhap có tiền nhập phải trả cao nhất trong năm 2018.
+SELECT TOP 1 sohdn, ngaynhap, dongiaN
+FROM Nhap
+ORDER BY dongiaN DESC
+-- 14.Đưa ra 10 mặt hàng có soluongN nhiều nhất trong năm 2019.
+SELECT TOP 10 Sanpham.tensp, SUM(Nhap.soluongN) AS TongSoLuongN 
+FROM Sanpham 
+INNER JOIN Nhap ON Sanpham.masp = Nhap.masp 
+WHERE YEAR(Nhap.ngaynhap) = 2019 
+GROUP BY Sanpham.tensp 
+ORDER BY TongSoLuongN DESC
+-- 15.Đưa ra masp,tensp của các sản phẩm do công ty 'Samsung' sản xuất do nhân viên có mã 'NV01' nhập.
+SELECT Sanpham.masp, Sanpham.tensp
+FROM Sanpham
+INNER JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
+INNER JOIN Nhap ON Sanpham.masp = Nhap.masp
+INNER JOIN Nhanvien ON Nhap.manv = Nhanvien.manv
+WHERE Hangsx.tenhang = 'Samsung' AND Nhanvien.manv = 'NV01';
+-- 16.Đưa ra sohda, masp, soluongN, ngayN của mặt hàng có masp là 'SPO2', được nhân viên 'NVG2' xuất.
+SELECT sohdn, masp, soluongN, ngaynhap
+FROM Nhap
+WHERE masp = 'SP02' AND manv = 'NV02'
+-- 17.Đưa ra manv, tennv, đã xuất mặt hàng có mã 'SPO2' ngày '03-02-2020'.
+FROM Xuat
+INNER JOIN Sanpham ON Xuat.masp = Sanpham.masp
+INNER JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
+INNER JOIN Nhanvien ON Xuat.manv = Nhanvien.manv
+WHERE MONTH(Xuat.ngayxuat) = 10 AND YEAR(Xuat.ngayxuat) = 2018
+ORDER BY Xuat.sohdx ASC;
+-- 7.  --
+SELECT sohdn, Sanpham.masp, tensp, soluongN, dongiaN, ngaynhap, tennv, phong
+FROM Nhap 
+JOIN Sanpham ON Nhap.masp = Sanpham.masp 
+JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
+JOIN Nhanvien ON Nhap.manv = Nhanvien.manv
+WHERE Hangsx.tenhang = 'Samsung' AND YEAR(ngaynhap) = 2017;
+--8. --
+SELECT TOP 10 Xuat.sohdx, Sanpham.tensp, Xuat.soluongX
+FROM Xuat 
+INNER JOIN Sanpham ON Xuat.masp = Sanpham.masp
+WHERE YEAR(Xuat.ngayxuat) = '2023' 
+ORDER BY Xuat.soluongX DESC;
+--9. --
+SELECT TOP 10 tenSP, giaBan
+FROM SanPham
+ORDER BY giaBan DESC;
+--10. --
+SELECT *
+FROM Sanpham
+JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
+WHERE Hangsx.tenhang = 'Samsung' AND Sanpham.giaban >= 100000 AND Sanpham.giaban <= 500000
+--11 --
+SELECT SUM(soluongN * dongiaN) AS tongtien
+FROM Nhap
+JOIN Sanpham ON Nhap.masp = Sanpham.masp
+JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
+WHERE Hangsx.tenhang = 'Samsung' AND YEAR(ngaynhap) = 2018
+--12 --
+SELECT SUM(Xuat.soluongX * Sanpham.giaban) AS Tongtien
+FROM Xuat
+INNER JOIN Sanpham ON Xuat.masp = Sanpham.masp
+WHERE Xuat.ngayxuat = '2018-09-02'
+--13 --
+SELECT TOP 1 sohdn, ngaynhap, dongiaN
+FROM Nhap
+ORDER BY dongiaN DESC
+--14 --
+SELECT TOP 10 Sanpham.tensp, SUM(Nhap.soluongN) AS TongSoLuongN 
+FROM Sanpham 
+INNER JOIN Nhap ON Sanpham.masp = Nhap.masp 
+WHERE YEAR(Nhap.ngaynhap) = 2019 
+GROUP BY Sanpham.tensp 
+ORDER BY TongSoLuongN DESC
+--15 --
+SELECT Sanpham.masp, Sanpham.tensp
+FROM Sanpham
+INNER JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx
+INNER JOIN Nhap ON Sanpham.masp = Nhap.masp
+INNER JOIN Nhanvien ON Nhap.manv = Nhanvien.manv
+WHERE Hangsx.tenhang = 'Samsung' AND Nhanvien.manv = 'NV01';
+--16 --
+SELECT sohdn, masp, soluongN, ngaynhap
+FROM Nhap
+WHERE masp = 'SP02' AND manv = 'NV02'
+--17 --
+SELECT Nhanvien.manv, Nhanvien.tennv
+FROM Nhanvien
+INNER JOIN Xuat ON Nhanvien.manv = Xuat.manv
+WHERE Xuat.masp = 'SP02' AND Xuat.ngayxuat = '2020-03-02'
+
